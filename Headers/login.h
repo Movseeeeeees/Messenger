@@ -34,10 +34,8 @@ private:
     QLabel* _label_png_m;
     QLabel* _label_log;
     QLabel* _label_pass;
-
     QPixmap* _pixmap_m;
-    //QSqlDatabase _db;
-    database db;
+    Database& db;
     SecondWidget* _secondWidget;
 protected:
 public slots:
@@ -46,8 +44,6 @@ public slots:
     void _connect();
     void _performLogin();
     QString _hashpassword(const QString &password);
-    void _deactivateuser();
-
     void _opensecondwidget();
     void _openchatwidget();
     void _openmainwidget();

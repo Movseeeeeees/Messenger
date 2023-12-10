@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QSqlDatabase>
+#include "Headers/database.h"
 
 class SecondWidget : public QWidget
 {
@@ -29,20 +30,15 @@ private:
     QPushButton* _create;
     QPushButton* _load;
     QPushButton* _login_page;
-
-    QSqlDatabase _db;
+    Database& db;
     QByteArray _fdtos;
     QString _imagename;
 
 public slots:
-    void _initialize_db();
     void _designinterface();
     void _definedesign();
     void _connect();
-
-    bool _checkmail();
     QString _hashpassword(const QString &password);
-    void _insertdata(QString name,QString surname,QString mail,QString phone ,QString password ,QString imagename, QByteArray fdtos);
     bool _checkdata();
     void _createaccount();
     void _loadimage();

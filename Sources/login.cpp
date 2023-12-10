@@ -17,13 +17,14 @@
 #include <QCloseEvent>
 #include <QMap>
 
-MainWidget::MainWidget(QWidget *parent) :QWidget(parent){
-    db._initialize_db();
+MainWidget::MainWidget(QWidget *parent) :QWidget(parent),db(Database::instance())
+{
     _designinterface();
     _connect();
 }
 
-void MainWidget::_definedesign(){
+void MainWidget::_definedesign()
+{
     _main= new QWidget;
     _button_new = new QPushButton(tr("Create new account"));
     _button_login = new QPushButton(tr("Log In"));
@@ -44,7 +45,8 @@ void MainWidget::_definedesign(){
     _widget_h->setLayout(horizontalLayout);
 }
 
-void MainWidget::_designinterface(){
+void MainWidget::_designinterface()
+{
     _definedesign();
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(_label_png_m,1,0);
@@ -58,12 +60,14 @@ void MainWidget::_designinterface(){
     _main->show();
 }
 
-void MainWidget::_connect(){
+void MainWidget::_connect()
+{
     connect(_button_new, &QPushButton::clicked, this,&MainWidget::_opensecondwidget);
     connect(_button_login,&QPushButton::clicked,this,&MainWidget::_performLogin);
 }
 
-void MainWidget::_performLogin(){
+void MainWidget::_performLogin()
+{
     if(_line_log->text().isEmpty() or _line_pass->text().isEmpty()){
         QMessageBox::information(this, "Info", "wrong");
     }
@@ -81,34 +85,35 @@ void MainWidget::_performLogin(){
     }
 }
 
-QString MainWidget::_hashpassword(const QString &password){
+QString MainWidget::_hashpassword(const QString &password)
+{
     QByteArray passwordBytes = password.toUtf8();
     QByteArray hashBytes = QCryptographicHash::hash(passwordBytes, QCryptographicHash::Sha256);
     return QString(hashBytes.toHex());
 }
 
-void MainWidget::_deactivateuser(){
-    db._deactivateuser(_line_log->text());
-}
-
-void MainWidget::_opensecondwidget(){
+void MainWidget::_opensecondwidget()
+{
     _secondWidget = new SecondWidget;
     this->hide();
     _secondWidget->show();
 }
 
-void MainWidget::_openchatwidget(){
+void MainWidget::_openchatwidget()
+{
     chatwidget *chat=new chatwidget(_line_log->text(),nullptr);
     chat->resize(600,700);
     chat->show();
 }
 
-void MainWidget::_openmainwidget(){
+void MainWidget::_openmainwidget()
+{
     _secondWidget->hide();
     this->show();
 }
 
-MainWidget::~MainWidget(){
+MainWidget::~MainWidget()
+{
     delete _button_new;
     delete _button_login;
     delete _line_log;

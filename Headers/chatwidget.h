@@ -13,6 +13,7 @@
 #include <QCloseEvent>
 #include "Headers/user.h"
 #include <QListWidget>
+#include "Headers/database.h"
 
 class chatwidget : public QWidget {
     Q_OBJECT
@@ -38,10 +39,9 @@ private:
     QString _to_mail=NULL;
     QPushButton* _send;
     QPushButton* _logout;
-    QSqlDatabase _db;
+    Database& db;
     QVBoxLayout *_group_logout;
     QVBoxLayout *_group_lay_communicate;
-    QHBoxLayout *_troup_lay_active;
     QVBoxLayout *_all;
     QPixmap *_image;
     QMap<QString,User> _map_active_users;
@@ -52,7 +52,6 @@ public slots:
     void _showactiveusers();
     void _connectwithuser();
     void _connectwithuserfromonline();
-    void _initialize_db();
     void _connect();
     void _designinterface();
     void _designinterfacefirsthbox();
@@ -65,14 +64,13 @@ public slots:
     void _getimagefromdbquery(QString user);
     void _getusersfromdb();
     void _checknewmessage();
-    void _markmessagesstatuseread(QString user1,QString user2);
 protected:
     void closeEvent(QCloseEvent *event) override
     {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Close", "Do you really want to close the application?",QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes) {
-            _deactivate();
+            db._deactivateuser(_mail);
             event->accept();
         }
         else {

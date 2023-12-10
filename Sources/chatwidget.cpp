@@ -19,30 +19,21 @@
 #include <QListWidgetItem>
 #include <QCheckBox>
 
-chatwidget::chatwidget(const QString &user, QWidget *parent):QWidget(parent){
-    qDebug() << "2";
+chatwidget::chatwidget(const QString &user, QWidget *parent):QWidget(parent),db(Database::instance())
+{
     _setuser(user);
-    _initialize_db();
     _designinterface();
     _getusersfromdb();
     _connect();
     _showactiveusers();
 }
 
-void chatwidget::_initialize_db(){
-    _db = QSqlDatabase::addDatabase("QMYSQL");
-    _db.setHostName("127.0.0.1");
-    _db.setDatabaseName("my_database");
-    _db.setUserName("hp");
-    _db.setPassword("7777777");
-    _db.setPort(3306);
-}
-
-void chatwidget::_designinterface(){
+void chatwidget::_designinterface()
+{
     _designinterfacefirsthbox();
     _designinterfaceusersgroupbox();
     _designinterfacecommunicategroupbox();
-        //list of users
+    //list of users
     QWidget *user_list_w=new QWidget;
     _l=new QHBoxLayout;
     _users_list=new QListWidget;
@@ -58,7 +49,8 @@ void chatwidget::_designinterface(){
     setWindowTitle(tr("Messenger"));
 }
 
-void chatwidget::_designinterfacefirsthbox(){
+void chatwidget::_designinterfacefirsthbox()
+{
     _status = new QWidget;
     _logout = new QPushButton(tr("Log out"));
     _username = new QLabel(_mail);
@@ -69,7 +61,8 @@ void chatwidget::_designinterfacefirsthbox(){
     _status->setLayout(hbox_up);
 }
 
-void chatwidget::_designinterfaceusersgroupbox(){
+void chatwidget::_designinterfaceusersgroupbox()
+{
     _activ_users= new QGroupBox(tr("Active users"));
     _activ_users->setFixedHeight(100);
     _group_lay_active = new QHBoxLayout;
@@ -78,7 +71,8 @@ void chatwidget::_designinterfaceusersgroupbox(){
     _group_lay_active->addWidget(_active_users_list);
 }
 
-void chatwidget::_designinterfacecommunicategroupbox(){
+void chatwidget::_designinterfacecommunicategroupbox()
+{
     _communicate= new QGroupBox(tr("Area"));
     _message = new QLineEdit;
     _message->setPlaceholderText("Message");
@@ -95,7 +89,8 @@ void chatwidget::_designinterfacecommunicategroupbox(){
     _communicate->setLayout(_group_lay_communicate);
 }
 
-void chatwidget::_connect(){
+void chatwidget::_connect()
+{
     connect(_logout,SIGNAL(clicked(bool)),this,SLOT(_deactivate()));
     connect(_send,SIGNAL(clicked(bool)),this,SLOT(_sendmessage()));
     connect(_users_list,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(_connectwithuser()));
@@ -108,64 +103,37 @@ void chatwidget::_connect(){
     timer->start(2000);
 }
 
-void chatwidget::_connectwithuser(){
+void chatwidget::_connectwithuser()
+{
     _l->addWidget(_communicate);
     _to_mail=_users_list->currentItem()->text();
     _updatelistmessages();
     _users_list->currentItem()->setBackground(Qt::color0);
-    _markmessagesstatuseread(_to_mail,_mail);
+    db._markmessagestatuseread(_to_mail,_mail);
 }
 
-void chatwidget::_connectwithuserfromonline(){
+void chatwidget::_connectwithuserfromonline()
+{
     _l->addWidget(_communicate);
     _to_mail=_active_users_list->currentItem()->text();
     _updatelistmessages();
-    _markmessagesstatuseread(_to_mail,_mail);
+    db._markmessagestatuseread(_to_mail,_mail);
 }
 
-void chatwidget::_checkonlineusers(){
-    QSqlDatabase::database().transaction();
-    _db.open();
-    QSqlQuery query(_db);
-    if (query.exec("SELECT * FROM my_database.users WHERE active = '1';")) {
-        _map_active_users.clear();
-        while (query.next()) {
-            QString name = query.value(0).toString();
-            QString surname = query.value(1).toString();
-            QString mail = query.value(2).toString();
-            QString phone = query.value(3).toString();
-            if(mail!=this->_mail){
-                _map_active_users.insert(mail,User(name,surname,mail,phone));
-            }
-        }
-    }
-    else {
-        qDebug() << "Query failed: " << query.lastError().text();
-    }
-    _db.close();
+void chatwidget::_checkonlineusers()
+{
+    db._checkonlineusers(_map_active_users,_mail);
     _showactiveusers();
 }
 
-void chatwidget::_deactivate(){
-    QSqlDatabase::database().transaction();
-    _db.open();
-    QSqlQuery query(_db);
-    bool isActive = 0;
-    query.prepare("UPDATE my_database.users SET active = :active WHERE mail = :mail");
-    query.bindValue(":active", isActive);
-    query.bindValue(":mail", _mail);
-    if (query.exec()) {
-        qDebug() << "User status updated successfully";
-    }
-    else {
-        qDebug() << "Failed to update user status:" << query.lastError().text();
-    }
-    _db.close();
-    QSqlDatabase::database().commit();
+void chatwidget::_deactivate()
+{
+    db._deactivateuser(_mail);
     this->close();
 }
 
-void chatwidget::_showactiveusers(){
+void chatwidget::_showactiveusers()
+{
     QMapIterator<QString,User> i(_map_active_users);
     _active_users_list->clear();
     while(i.hasNext()){
@@ -175,86 +143,42 @@ void chatwidget::_showactiveusers(){
     }
 }
 
-void chatwidget::_setuser(const QString &user){
+void chatwidget::_setuser(const QString &user)
+{
     _mail=user;
 }
 
-void chatwidget::_sendmessage(){
+void chatwidget::_sendmessage()
+{
     if(!_message->text().isEmpty() and _to_mail != ""){
         QString textuser=QString("%1 : %2 \n").arg(_mail).arg(_message->text());
         _text->insertPlainText(textuser);
         _text->moveCursor(QTextCursor::End);
-        QDateTime currentDateTime = QDateTime::currentDateTime();
-        QString datetime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss");
-        QString status="new";
-        QSqlDatabase::database().transaction();
-        _db.open();
-        QSqlQuery query(_db);
-        query.prepare("INSERT INTO my_database.messages (user1,user2,date,message,status) VALUES (?,?,?,?,?);");
-        query.bindValue(0, _mail);
-        query.bindValue(1, _to_mail);
-        query.bindValue(2, datetime);
-        query.bindValue(3, _message->text());
-        query.bindValue(4, status);
-        query.exec();
-        _db.close();
-        QSqlDatabase::database().commit();
+        db._sendmessage(_mail,_to_mail,_message->text());
         _message->clear();
     }
 }
 
-void chatwidget::_updatelistmessages(){
+void chatwidget::_updatelistmessages()
+{
     if(_to_mail != ""){
         _text->clear();
-        QSqlDatabase::database().transaction();
-        _db.open();
-        QSqlQuery query;
-        query.prepare("SELECT * FROM my_database.messages WHERE (user1=:mail or user1=:to_mail) and (user2=:to_mail or user2=:mail)");
-        query.bindValue(":mail",_mail);
-        query.bindValue(":to_mail",_to_mail);
-        if (query.exec()) {
-            while (query.next()) {
-                QString user = query.value("user1").toString();
-                QString message = query.value("message").toString();
-                QString textuser = QString("%1 : %2 \n").arg(user).arg(message);
-                _text->insertPlainText(textuser);
-            }
-            _text->moveCursor(QTextCursor::End);
-        }
-        else {
-            qDebug() << "Error executing query: " << query.lastError().text();
-        }
-        _db.close();
-        QSqlDatabase::database().commit();
+        db._updatelistmessages(_text,_mail,_to_mail);
     }
 }
 
-void chatwidget::_getimagefromdbquery(QString user){
+void chatwidget::_getimagefromdbquery(QString user)
+{
+    _image = new QPixmap("/home/movses/Desktop/Messenger/Messenger/Resources/user.png");
     QByteArray image_data;
-    _image = new QPixmap("/home/movses/QT_messenger/Resources/user.png");
-    QString image_name;
-    QSqlDatabase::database().transaction();
-    _db.open();
-    QSqlQuery query(_db);
-    query.prepare("SELECT * FROM my_database.users WHERE mail=:user");
-    query.bindValue(":user",user);
-    if(query.exec()){
-        if(query.next()){
-            image_name=query.value("imagename").toString();
-            image_data=QByteArray::fromBase64(query.value("imagedata").toByteArray());
-        }
-    }
-    else{
-        qDebug() << "Error executing query: " << query.lastError().text();
-    }
-    _db.close();
-    QSqlDatabase::database().commit();
+    image_data=db._getimagefromdbquery(user);
     if(!image_data.isEmpty()){
         _image->loadFromData(image_data,"JPG");
     }
 }
 
-QLabel* chatwidget::_getimagefromdb(QString user){
+QLabel* chatwidget::_getimagefromdb(QString user)
+{
     _getimagefromdbquery(user);
     *_image = _image->scaled(100,100,Qt::KeepAspectRatio);
     QLabel *label_png = new QLabel;
@@ -269,70 +193,12 @@ QLabel* chatwidget::_getimagefromdb(QString user){
     return label_png;
 }
 
-void chatwidget::_getusersfromdb(){
-    QSqlDatabase::database().transaction();
-    _db.open();
-    QSqlQuery query(_db);
-    _map_all_users.clear();
-    _users_list->clear();
-    if (query.exec("SELECT * FROM my_database.users")) {
-        while (query.next()) {
-            QString name = query.value(0).toString();
-            QString surname = query.value(1).toString();
-            QString mail = query.value(2).toString();
-            QString phone = query.value(3).toString();
-            if(mail!=this->_mail){
-                _map_all_users.insert(mail,User(name,surname,mail,phone));
-            }
-        }
-        QList<QString> keys = _map_all_users.keys();
-        for (int i = 0; i < keys.size(); ++i) {
-            QListWidgetItem *item=new QListWidgetItem(keys.at(i));
-            _users_list->addItem(item);
-        }
-    }
-    else {
-        qDebug() << "Query failed: " << query.lastError().text();
-    }
-    _db.close();
-}
+void chatwidget::_getusersfromdb()
+{
+    db._getusersfromdb(_map_all_users,_users_list,_mail);
+ }
 
-void chatwidget::_checknewmessage(){
-    QSqlDatabase::database().transaction();
-    _db.open();
-    QSqlQuery query(_db);
-    QString user="new";
-    query.exec("SELECT * FROM my_database.messages WHERE (user2=?) AND (status=?)");
-    query.bindValue(0,_mail);
-    query.bindValue(1,user);
-    if(query.exec()){
-        while (query.next()) {
-            QString from = query.value(0).toString();
-            int index = _map_all_users.keys().indexOf(from);
-            _users_list->item(index)->setBackground(Qt::yellow);
-        }
-    }
-    else {
-        qDebug() << "Query failed: " << query.lastError().text();
-    }
-    _db.close();
-}
-
-void chatwidget::_markmessagesstatuseread(QString user1, QString user2){
-    QSqlDatabase::database().transaction();
-    _db.open();
-    QSqlQuery query(_db);
-    QString status="Readed";
-    query.prepare("UPDATE my_database.messages SET status = :status WHERE user1 = :user1 and user2=:user2");
-    query.bindValue(":status", status);
-    query.bindValue(":user1",user1);
-    query.bindValue(":user2", user2);
-    if (query.exec()) {
-        qDebug() << "Messages status updated successfully";
-    }
-    else {
-        qDebug() << "Failed to update messages status:" << query.lastError().text();
-    }
-    _db.close();
-    QSqlDatabase::database().commit();
+void chatwidget::_checknewmessage()
+{
+    db._checknewmessage(_users_list,_map_all_users,_mail);
 }
