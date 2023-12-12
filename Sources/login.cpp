@@ -16,6 +16,7 @@
 #include <QFileInfo>
 #include <QCloseEvent>
 #include <QMap>
+#include <QObject>
 
 MainWidget::MainWidget(QWidget *parent) :QWidget(parent),db(Database::instance())
 {
@@ -25,7 +26,7 @@ MainWidget::MainWidget(QWidget *parent) :QWidget(parent),db(Database::instance()
 
 void MainWidget::_definedesign()
 {
-    _main= new QWidget;
+    //_main= new QWidget;
     _button_new = new QPushButton(tr("Create new account"));
     _button_login = new QPushButton(tr("Log In"));
     _button_login->setDefault(true);
@@ -55,15 +56,16 @@ void MainWidget::_designinterface()
     mainLayout->addWidget(_label_pass,4,0);
     mainLayout->addWidget(_line_pass,5,0);
     mainLayout->addWidget(_widget_h,6,0);
-    _main->setLayout(mainLayout);
-    _main->setWindowTitle(tr("Messenger"));
-    _main->show();
+    this->setLayout(mainLayout);
+    this->setWindowTitle(tr("Messenger"));
+    //this->show();
 }
 
 void MainWidget::_connect()
 {
     connect(_button_new, &QPushButton::clicked, this,&MainWidget::_opensecondwidget);
     connect(_button_login,&QPushButton::clicked,this,&MainWidget::_performLogin);
+
 }
 
 void MainWidget::_performLogin()
@@ -76,11 +78,11 @@ void MainWidget::_performLogin()
             qDebug() << "Login successful";
             db._activeateuser(_line_log->text());
             _openchatwidget();
-            _main->hide();
+            this->hide();
             this->setVisible(false);
         }
         else{
-        QMessageBox::information(this, "Info", "Login failed. Incorrect username or password.");
+             QMessageBox::information(this, "Info", "Login failed. Incorrect username or password.");
         }
     }
 }
@@ -97,6 +99,7 @@ void MainWidget::_opensecondwidget()
     _secondWidget = new SecondWidget;
     this->hide();
     _secondWidget->show();
+    connect(_secondWidget,SIGNAL(mysignal()),this,SLOT(_openmainwidget()));
 }
 
 void MainWidget::_openchatwidget()
@@ -108,7 +111,6 @@ void MainWidget::_openchatwidget()
 
 void MainWidget::_openmainwidget()
 {
-    _secondWidget->hide();
     this->show();
 }
 

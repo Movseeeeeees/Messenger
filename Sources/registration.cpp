@@ -12,8 +12,9 @@
 #include <QPixmap>
 #include <QBuffer>
 #include <QFileInfo>
+#include "Headers/login.h"
 
-SecondWidget::SecondWidget(QWidget *parent) : QWidget(parent),db(Database::instance())
+SecondWidget::SecondWidget( QWidget *parent) : QWidget(parent),db(Database::instance())
 {
     _designinterface();
     _connect();
@@ -67,6 +68,7 @@ void SecondWidget::_connect()
     connect(_login_page,&QPushButton::clicked,this,&SecondWidget::_openmainwidget);
     connect(_create,SIGNAL(clicked(bool)) , this,SLOT(_createaccount()));
     connect(_load,SIGNAL(clicked(bool)), this , SLOT(_loadimage()));
+
 }
 
 void SecondWidget::_createaccount()
@@ -140,6 +142,7 @@ void SecondWidget::_loadimage()
 void SecondWidget::_openmainwidget()
 {
     this->hide();
+    emit mysignal();
 }
 
 SecondWidget::~SecondWidget()

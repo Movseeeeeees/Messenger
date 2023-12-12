@@ -25,7 +25,7 @@ public:
     MainWidget(QWidget *parent = 0); //Constructor
     ~MainWidget(); // Destructor
 private:
-    QWidget* _main;
+    //QWidget* _main;
     QWidget* _widget_h;
     QPushButton* _button_login;
     QPushButton* _button_new;
@@ -47,6 +47,7 @@ public slots:
     void _opensecondwidget();
     void _openchatwidget();
     void _openmainwidget();
+
 };
 
 #endif // LOGIN_H

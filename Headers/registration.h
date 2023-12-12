@@ -43,6 +43,10 @@ public slots:
     void _createaccount();
     void _loadimage();
     void _openmainwidget();
+protected:
+signals:
+    void mysignal();
+
 };
 
 #endif // REGISTRATION_H
