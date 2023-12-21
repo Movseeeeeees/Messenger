@@ -16,6 +16,8 @@
 #include "Headers/database.h"
 
 class chatwidget : public QWidget {
+    friend class Chatcontroller;
+    friend class Chatmodel;
     Q_OBJECT
 
 public:
@@ -25,45 +27,31 @@ private:
     QWidget *_status;
     QCheckBox *_check;
     QHBoxLayout *_l;
-    QHBoxLayout *_group_lay_active;
-    QListWidget *_users_list;
-    QListWidget *_active_users_list;
+    QHBoxLayout *_grouplayactive;
+    QListWidget *_userslist;
+    QListWidget *_activeuserslist;
     QLabel* _username;
-    QGroupBox* _activ_users;
+    QGroupBox* _activusers;
     QGroupBox* _communicate;
-    QGroupBox* _logout_box;
-    QComboBox* _list_users;
+    QGroupBox* _logoutbox;
+    QComboBox* _listusers;
     QTextBrowser* _text;
     QLineEdit* _message;
     QString _mail;
-    QString _to_mail=NULL;
     QPushButton* _send;
     QPushButton* _logout;
     Database& db;
-    QVBoxLayout *_group_logout;
-    QVBoxLayout *_group_lay_communicate;
+    QVBoxLayout *_grouplogout;
+    QVBoxLayout *_grouplaycommunicate;
     QVBoxLayout *_all;
     QPixmap *_image;
-    QMap<QString,User> _map_active_users;
-    QMap<QString,User> _map_all_users;
 public slots:
-    void _checkonlineusers();
-    void _deactivate();
-    void _showactiveusers();
-    void _connectwithuser();
-    void _connectwithuserfromonline();
-    void _connect();
-    void _designinterface();
-    void _designinterfacefirsthbox();
-    void _designinterfaceusersgroupbox();
-    void _designinterfacecommunicategroupbox();
-    void _setuser(const QString &user);
-    void _sendmessage();
-    void _updatelistmessages();
-    QLabel* _getimagefromdb(QString user);
-    void _getimagefromdbquery(QString user);
-    void _getusersfromdb();
-    void _checknewmessage();
+    void Designinterface();
+    void Designinterfacefirsthbox();
+    void Designinterfaceusersgroupbox();
+    void Designinterfacecommunicategroupbox();
+    void Setuser(const QString &user);
+    QLabel* Getimagefromdb(QString user);
 protected:
     void closeEvent(QCloseEvent *event) override
     {

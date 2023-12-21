@@ -20,107 +20,66 @@
 
 MainWidget::MainWidget(QWidget *parent) :QWidget(parent),db(Database::instance())
 {
-    _designinterface();
-    _connect();
+    Definedesign();
+    Designinterface();
 }
 
-void MainWidget::_definedesign()
+void MainWidget::Definedesign()
 {
-    //_main= new QWidget;
-    _button_new = new QPushButton(tr("Create new account"));
-    _button_login = new QPushButton(tr("Log In"));
-    _button_login->setDefault(true);
-    _line_log = new QLineEdit;
-    _line_pass = new QLineEdit;
-    _label_log = new QLabel("Login");
-    _label_pass = new QLabel("Password");
-    _line_pass->setEchoMode(QLineEdit::Password);
-    _pixmap_m = new QPixmap("/home/movses/Desktop/Messenger/Messenger/Resources/chat.png");
-    _label_png_m = new QLabel;
-    _label_png_m->setPixmap(*_pixmap_m);
-    _label_png_m->setFixedSize(250,250);
-    _widget_h = new QWidget;
+    _buttonnew = new QPushButton(tr("Create new account"));
+    _buttonlogin = new QPushButton(tr("Log In"));
+    _buttonlogin->setDefault(true);
+    _linelog = new QLineEdit;
+    _linepass = new QLineEdit;
+    _labellog = new QLabel("Login");
+    _labelpass = new QLabel("Password");
+    _linepass->setEchoMode(QLineEdit::Password);
+    _pixmapm = new QPixmap("/home/movses/Desktop/Messenger/Messenger/Resources/chat.png");
+    _labelpngm = new QLabel;
+    _labelpngm->setPixmap(*_pixmapm);
+    _labelpngm->setFixedSize(250,250);
+    _widgeth = new QWidget;
     QHBoxLayout *horizontalLayout = new QHBoxLayout;
-    horizontalLayout->addWidget(_button_new);
-    horizontalLayout->addWidget(_button_login);
-    _widget_h->setLayout(horizontalLayout);
+    horizontalLayout->addWidget(_buttonnew);
+    horizontalLayout->addWidget(_buttonlogin);
+    _widgeth->setLayout(horizontalLayout);
 }
 
-void MainWidget::_designinterface()
+void MainWidget::Designinterface()
 {
-    _definedesign();
     QGridLayout *mainLayout = new QGridLayout;
-    mainLayout->addWidget(_label_png_m,1,0);
-    mainLayout->addWidget(_label_log,2,0);
-    mainLayout->addWidget(_line_log,3,0);
-    mainLayout->addWidget(_label_pass,4,0);
-    mainLayout->addWidget(_line_pass,5,0);
-    mainLayout->addWidget(_widget_h,6,0);
+    mainLayout->addWidget(_labelpngm,1,0);
+    mainLayout->addWidget(_labellog,2,0);
+    mainLayout->addWidget(_linelog,3,0);
+    mainLayout->addWidget(_labelpass,4,0);
+    mainLayout->addWidget(_linepass,5,0);
+    mainLayout->addWidget(_widgeth,6,0);
     this->setLayout(mainLayout);
     this->setWindowTitle(tr("Messenger"));
-    //this->show();
 }
 
-void MainWidget::_connect()
+void MainWidget::Showsomething(QString thing)
 {
-    connect(_button_new, &QPushButton::clicked, this,&MainWidget::_opensecondwidget);
-    connect(_button_login,&QPushButton::clicked,this,&MainWidget::_performLogin);
-
+    QMessageBox::information(this, "Info", thing);
 }
 
-void MainWidget::_performLogin()
+QString MainWidget::Get(QString text)
 {
-    if(_line_log->text().isEmpty() or _line_pass->text().isEmpty()){
-        QMessageBox::information(this, "Info", "wrong");
-    }
-    else{
-        if(db._performlogin(_line_log->text(),_hashpassword(_line_pass->text()))){
-            qDebug() << "Login successful";
-            db._activeateuser(_line_log->text());
-            _openchatwidget();
-            this->hide();
-            this->setVisible(false);
-        }
-        else{
-             QMessageBox::information(this, "Info", "Login failed. Incorrect username or password.");
-        }
-    }
-}
-
-QString MainWidget::_hashpassword(const QString &password)
-{
-    QByteArray passwordBytes = password.toUtf8();
-    QByteArray hashBytes = QCryptographicHash::hash(passwordBytes, QCryptographicHash::Sha256);
-    return QString(hashBytes.toHex());
-}
-
-void MainWidget::_opensecondwidget()
-{
-    _secondWidget = new SecondWidget;
-    this->hide();
-    _secondWidget->show();
-    connect(_secondWidget,SIGNAL(mysignal()),this,SLOT(_openmainwidget()));
-}
-
-void MainWidget::_openchatwidget()
-{
-    chatwidget *chat=new chatwidget(_line_log->text(),nullptr);
-    chat->resize(600,700);
-    chat->show();
-}
-
-void MainWidget::_openmainwidget()
-{
-    this->show();
+    if(text=="log")
+        return _linelog->text();
+    else
+        if(text=="pass")
+            return _linepass->text();
+    return " ";
 }
 
 MainWidget::~MainWidget()
 {
-    delete _button_new;
-    delete _button_login;
-    delete _line_log;
-    delete _line_pass;
-    delete _label_log;
-    delete _label_pass;
-    delete _pixmap_m;
+    delete _buttonnew;
+    delete _buttonlogin;
+    delete _linelog;
+    delete _linepass;
+    delete _labellog;
+    delete _labelpass;
+    delete _pixmapm;
 }

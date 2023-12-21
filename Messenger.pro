@@ -24,7 +24,13 @@ HEADERS += \
     $$PWD/Headers/login.h \
     $$PWD/Headers/registration.h \
     $$PWD/Headers/user.h \
+    Headers/Chatcontroller.h \
+    Headers/Chatmodel.h \
+    Headers/Registrationcontroller.h \
     Headers/database.h \
+    Headers/logincontroller.h \
+    Headers/loginmodel.h \
+    Headers/registrationmodel.h
 
 SOURCES += \
     $$PWD/Sources/main.cpp \
@@ -32,7 +38,13 @@ SOURCES += \
     $$PWD/Sources/login.cpp \
     $$PWD/Sources/registration.cpp \
     $$PWD/Sources/user.cpp \
-    Sources/database.cpp
+    Sources/Chatcontroller.cpp \
+    Sources/Chatmodel.cpp \
+    Sources/Registrationcontroller.cpp \
+    Sources/Registrationmodel.cpp \
+    Sources/database.cpp \
+    Sources/logincontroller.cpp \
+    Sources/loginmodel.cpp
 
 RESOURCES +=
     $$PWD/Resources

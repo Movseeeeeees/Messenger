@@ -12,41 +12,30 @@
 
 class SecondWidget : public QWidget
 {
+    friend class Registrationmodel;
+    friend class Registrationcontroller;
     Q_OBJECT
-
 public:
     SecondWidget(QWidget *parent = nullptr);
     ~SecondWidget();
 private:
-
+    QPushButton* _create;
+    QPushButton* _load;
+    QPushButton* _loginpage;
     QLineEdit* _name;
     QLineEdit* _surname;
     QLineEdit* _mail;
     QLineEdit* _phone;
     QLineEdit* _password;
-    QLineEdit* _password_check;
+    QLineEdit* _passwordcheck;
     QPixmap* _pixmap;
-    QLabel* _label_png;
-    QPushButton* _create;
-    QPushButton* _load;
-    QPushButton* _login_page;
-    Database& db;
-    QByteArray _fdtos;
-    QString _imagename;
-
+    QLabel* _labelpng;
 public slots:
-    void _designinterface();
-    void _definedesign();
-    void _connect();
-    QString _hashpassword(const QString &password);
-    bool _checkdata();
-    void _createaccount();
-    void _loadimage();
-    void _openmainwidget();
-protected:
+    void Designinterface();
+    void Definedesign();
+    void Openmainwidget();
 signals:
-    void mysignal();
-
+    void Mysignal();
 };
 
 #endif // REGISTRATION_H

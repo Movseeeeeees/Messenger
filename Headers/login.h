@@ -22,32 +22,26 @@ class MainWidget : public QWidget
     Q_OBJECT
 
 public:
-    MainWidget(QWidget *parent = 0); //Constructor
-    ~MainWidget(); // Destructor
+    MainWidget(QWidget *parent=nullptr );
+    ~MainWidget();
+    QPushButton* _buttonlogin;
+    QPushButton* _buttonnew;
 private:
-    //QWidget* _main;
-    QWidget* _widget_h;
-    QPushButton* _button_login;
-    QPushButton* _button_new;
-    QLineEdit* _line_log;
-    QLineEdit* _line_pass;
-    QLabel* _label_png_m;
-    QLabel* _label_log;
-    QLabel* _label_pass;
-    QPixmap* _pixmap_m;
+    QWidget* _widgeth;
+    QLineEdit* _linelog;
+    QLineEdit* _linepass;
+    QLabel* _labelpngm;
+    QLabel* _labellog;
+    QLabel* _labelpass;
+    QPixmap* _pixmapm;
     Database& db;
     SecondWidget* _secondWidget;
 protected:
 public slots:
-    void _designinterface();
-    void _definedesign();
-    void _connect();
-    void _performLogin();
-    QString _hashpassword(const QString &password);
-    void _opensecondwidget();
-    void _openchatwidget();
-    void _openmainwidget();
-
+    void Designinterface();
+    void Definedesign();
+    QString Get(QString);
+    void Showsomething(QString);
 };
 
 #endif // LOGIN_H
