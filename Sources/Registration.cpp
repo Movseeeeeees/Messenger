@@ -1,4 +1,4 @@
-#include "Headers/registration.h"
+#include "Headers/Registration.h"
 #include <QWidget>
 #include <QLabel>
 #include <QMessageBox>
@@ -11,7 +11,7 @@
 #include <QPixmap>
 #include <QBuffer>
 #include <QFileInfo>
-#include "Headers/login.h"
+#include "Headers/Login.h"
 
 SecondWidget::SecondWidget( QWidget *parent) : QWidget(parent)
 {

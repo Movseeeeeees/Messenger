@@ -11,17 +11,17 @@
 #include <QComboBox>
 #include <QMessageBox>
 #include <QCloseEvent>
-#include "Headers/user.h"
+#include "Headers/User.h"
 #include <QListWidget>
-#include "Headers/database.h"
+#include "Headers/Database.h"
 
-class chatwidget : public QWidget {
+class Chatwidget : public QWidget {
     friend class Chatcontroller;
     friend class Chatmodel;
     Q_OBJECT
 
 public:
-    chatwidget(const QString &user, QWidget *parent = nullptr);
+    Chatwidget(const QString &, QWidget *parent = nullptr);
 
 private:
     QWidget *_status;
@@ -58,7 +58,7 @@ protected:
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Close", "Do you really want to close the application?",QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes) {
-            db._deactivateuser(_mail);
+            db.Deactivateuser(_mail);
             event->accept();
         }
         else {

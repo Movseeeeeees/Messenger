@@ -1,6 +1,6 @@
 #include <QWidget>
-#include "Headers/chatwidget.h"
-#include "Headers/login.h"
+#include "Headers/Chatwidget.h"
+#include "Headers/Login.h"
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QMenuBar>
@@ -19,7 +19,7 @@
 #include <QListWidgetItem>
 #include <QCheckBox>
 
-chatwidget::chatwidget(const QString &user, QWidget *parent):QWidget(parent),db(Database::instance())
+Chatwidget::Chatwidget(const QString &user, QWidget *parent):QWidget(parent),db(Database::instance())
 {
     Setuser(user);
     Designinterfacefirsthbox();
@@ -29,7 +29,7 @@ chatwidget::chatwidget(const QString &user, QWidget *parent):QWidget(parent),db(
 
 }
 
-void chatwidget::Designinterface()
+void Chatwidget::Designinterface()
 {
     //list of users
     QWidget *userlistw=new QWidget;
@@ -47,7 +47,7 @@ void chatwidget::Designinterface()
     setWindowTitle(tr("Messenger"));
 }
 
-void chatwidget::Designinterfacefirsthbox()
+void Chatwidget::Designinterfacefirsthbox()
 {
     _status = new QWidget;
     _logout = new QPushButton(tr("Log out"));
@@ -59,7 +59,7 @@ void chatwidget::Designinterfacefirsthbox()
     _status->setLayout(hboxup);
 }
 
-void chatwidget::Designinterfaceusersgroupbox()
+void Chatwidget::Designinterfaceusersgroupbox()
 {
     _activusers= new QGroupBox(tr("Active users"));
     _activusers->setFixedHeight(100);
@@ -69,7 +69,7 @@ void chatwidget::Designinterfaceusersgroupbox()
     _grouplayactive->addWidget(_activeuserslist);
 }
 
-void chatwidget::Designinterfacecommunicategroupbox()
+void Chatwidget::Designinterfacecommunicategroupbox()
 {
     _communicate= new QGroupBox(tr("Area"));
     _message = new QLineEdit;
@@ -87,16 +87,16 @@ void chatwidget::Designinterfacecommunicategroupbox()
     _communicate->setLayout(_grouplaycommunicate);
 }
 
-void chatwidget::Setuser(const QString &user)
+void Chatwidget::Setuser(const QString &user)
 {
     _mail=user;
 }
 
-QLabel* chatwidget::Getimagefromdb(QString user)
+QLabel* Chatwidget::Getimagefromdb(QString user)
 {
     _image = new QPixmap("/home/movses/Desktop/Messenger/Messenger/Resources/user.png");
     QByteArray image_data;
-    image_data=db._getimagefromdbquery(user);
+    image_data=db.Getimagefromdbquery(user);
     if(!image_data.isEmpty()){
         _image->loadFromData(image_data,"JPG");
     }

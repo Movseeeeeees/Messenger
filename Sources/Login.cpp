@@ -1,7 +1,7 @@
 #include <QtWidgets>
-#include "Headers/login.h"
-#include "Headers/chatwidget.h"
-#include "Headers/database.h"
+#include "Headers/Login.h"
+#include "Headers/Chatwidget.h"
+#include "Headers/Database.h"
 #include <QtSql/QSql>
 #include <QSqlDatabase>
 #include <QSqlQuery>

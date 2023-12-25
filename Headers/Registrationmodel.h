@@ -2,8 +2,8 @@
 #define REGISTRATIONMODEL_H
 
 #include <QObject>
-#include "Headers/database.h"
-#include "Headers/registration.h"
+#include "Headers/Database.h"
+#include "Headers/Registration.h"
 #include <QBuffer>
 #include <QFileInfo>
 #include <QFileDialog>
@@ -18,10 +18,10 @@ class Registrationmodel : public QObject
     QString _imagename;
 
 public:
-    Registrationmodel(SecondWidget *view);
+    Registrationmodel(SecondWidget *);
 public slots:
     void Loadimage();
-    QString Hashpassword(const QString &password);
+    QString Hashpassword(const QString &);
     bool Checkdata();
     void Createaccount();
 private slots:

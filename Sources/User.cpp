@@ -1,4 +1,4 @@
-#include "Headers/user.h"
+#include "Headers/User.h"
 
 User::User(QString n, QString s, QString m, QString p)
 {

@@ -20,31 +20,31 @@ QT += core sql
 
 # Input
 HEADERS += \
-    $$PWD/Headers/chatwidget.h \
-    $$PWD/Headers/login.h \
-    $$PWD/Headers/registration.h \
-    $$PWD/Headers/user.h \
+    $$PWD/Headers/Chatwidget.h \
+    $$PWD/Headers/Login.h \
+    $$PWD/Headers/Registration.h \
+    $$PWD/Headers/User.h \
     Headers/Chatcontroller.h \
     Headers/Chatmodel.h \
+    Headers/Database.h \
+    Headers/Loginmodel.h \
     Headers/Registrationcontroller.h \
-    Headers/database.h \
-    Headers/logincontroller.h \
-    Headers/loginmodel.h \
-    Headers/registrationmodel.h
+    Headers/Registrationmodel.h \
+    Headers/Logincontroller.h
 
 SOURCES += \
-    $$PWD/Sources/main.cpp \
-    $$PWD/Sources/chatwidget.cpp \
-    $$PWD/Sources/login.cpp \
-    $$PWD/Sources/registration.cpp \
-    $$PWD/Sources/user.cpp \
+    $$PWD/Sources/Main.cpp \
+    $$PWD/Sources/Chatwidget.cpp \
+    $$PWD/Sources/Login.cpp \
+    $$PWD/Sources/Registration.cpp \
+    $$PWD/Sources/User.cpp \
     Sources/Chatcontroller.cpp \
     Sources/Chatmodel.cpp \
+    Sources/Database.cpp \
+    Sources/Logincontroller.cpp \
+    Sources/Loginmodel.cpp \
     Sources/Registrationcontroller.cpp \
-    Sources/Registrationmodel.cpp \
-    Sources/database.cpp \
-    Sources/logincontroller.cpp \
-    Sources/loginmodel.cpp
+    Sources/Registrationmodel.cpp
 
 RESOURCES +=
     $$PWD/Resources

@@ -12,10 +12,10 @@
 #include <QGroupBox>
 #include <QTextEdit>
 #include <QMap>
-#include "Headers/registration.h"
+#include "Headers/Registration.h"
 #include <QEvent>
 #include <QKeyEvent>
-#include "Headers/database.h"
+#include "Headers/Database.h"
 
 class MainWidget : public QWidget
 {

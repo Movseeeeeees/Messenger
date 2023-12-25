@@ -2,8 +2,8 @@
 #define LOGINMODEL_H
 
 #include <QString>
-#include "Headers/database.h"
-#include <Headers/login.h>
+#include "Headers/Database.h"
+#include <Headers/Login.h>
 #include <QObject>
 
 class Loginmodel:public QObject
@@ -12,8 +12,8 @@ class Loginmodel:public QObject
     Database& db;
     MainWidget& _view;
 public:
-    Loginmodel(MainWidget &view);
-    QString Hashpassword(const QString &password);
+    Loginmodel(MainWidget &);
+    QString Hashpassword(const QString &);
     bool PerformLogin(QString,QString);
 signals:
     void Loginsuccessful();

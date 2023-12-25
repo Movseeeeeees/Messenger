@@ -8,7 +8,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QSqlDatabase>
-#include "Headers/database.h"
+#include "Headers/Database.h"
 
 class SecondWidget : public QWidget
 {

@@ -2,8 +2,8 @@
 #define REGISTRATIONCONTROLLER_H
 
 #include <QObject>
-#include "Headers/registrationmodel.h"
-#include "Headers/registration.h"
+#include "Headers/Registrationmodel.h"
+#include "Headers/Registration.h"
 
 class Registrationcontroller : public QObject
 {
@@ -12,7 +12,7 @@ class Registrationcontroller : public QObject
     Registrationmodel *_model;
 
 public:
-    Registrationcontroller(Registrationmodel *model,SecondWidget *view);
+    Registrationcontroller(Registrationmodel *,SecondWidget *);
     ~Registrationcontroller();
 public slots:
 private slots:

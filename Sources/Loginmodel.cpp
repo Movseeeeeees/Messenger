@@ -1,4 +1,4 @@
-#include "Headers/loginmodel.h"
+#include "Headers/Loginmodel.h"
 #include <QCryptographicHash>
 
 Loginmodel::Loginmodel(MainWidget &view):db(Database::instance()),_view(view)
@@ -16,9 +16,9 @@ QString Loginmodel::Hashpassword(const QString &password)
 bool Loginmodel::PerformLogin(QString a, QString b)
 {
     if(!_view.Get("log").isEmpty() and !_view.Get("pass").isEmpty()){
-        if(db._performlogin(a,Hashpassword(b))){
+        if(db.Performlogin(a,Hashpassword(b))){
             emit Loginsuccessful();
-            db._activeateuser(_view.Get("log"));
+            db.Activeateuser(_view.Get("log"));
             return true;
         }else{
             emit Loginfailed();

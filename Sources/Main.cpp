@@ -1,7 +1,7 @@
-#include "Headers/login.h"
-#include "Headers/loginmodel.h"
-#include "Headers/logincontroller.h"
-#include "Headers/database.h"
+#include "Headers/Login.h"
+#include "Headers/Loginmodel.h"
+#include "Headers/Logincontroller.h"
+#include "Headers/Database.h"
 
 #include <QApplication>
 

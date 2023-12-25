@@ -1,7 +1,7 @@
-#include "Headers/logincontroller.h"
-#include "Headers/registration.h"
-#include "Headers/chatwidget.h"
-#include "Headers/registrationmodel.h"
+#include "Headers/Logincontroller.h"
+#include "Headers/Registration.h"
+#include "Headers/Chatwidget.h"
+#include "Headers/Registrationmodel.h"
 #include "Headers/Registrationcontroller.h"
 #include <QBuffer>
 #include <QFileInfo>
@@ -27,12 +27,11 @@ void Logincontroller::Createaccountclicked()
     //mvc
     secondwidget->show();
     _view.hide();
-    //connect(secondwidget,&SecondWidget::mysignal,this,&Logincontroller::Openmainwidget);
 }
 
 void Logincontroller::Loginsuccessful()
 {
-    chat = new chatwidget(_view.Get("log"),nullptr);
+    chat = new Chatwidget(_view.Get("log"),nullptr);
     chat->resize(600,700);
     chat->show();
     chatmodel = new Chatmodel(chat,_view.Get("log"));

@@ -1,4 +1,4 @@
-#include "Headers/database.h"
+#include "Headers/Database.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
@@ -20,7 +20,7 @@ Database& Database::instance()
     return instance;
 }
 
-bool Database::_performlogin(QString user, QString password)
+bool Database::Performlogin(QString user, QString password)
 {
     QSqlDatabase::database().transaction();
     _db.open();
@@ -42,7 +42,7 @@ bool Database::_performlogin(QString user, QString password)
     return true;
 }
 
-bool Database::_activeateuser(QString mail)
+bool Database::Activeateuser(QString mail)
 {
     QSqlDatabase::database().transaction();
     _db.open();
@@ -63,7 +63,7 @@ bool Database::_activeateuser(QString mail)
     return true;
 }
 
-bool Database::_deactivateuser(QString mail)
+bool Database::Deactivateuser(QString mail)
 {
     QSqlDatabase::database().transaction();
     _db.open();
@@ -83,7 +83,7 @@ bool Database::_deactivateuser(QString mail)
     return true;
 }
 
-bool Database::_createuser(QString name, QString surname, QString mail, QString phone , QString password,QString imagename , QByteArray fdtos)
+bool Database::Createuser(QString name, QString surname, QString mail, QString phone , QString password,QString imagename , QByteArray fdtos)
 {
     bool activ=false;
     QSqlDatabase::database().transaction();
@@ -114,7 +114,7 @@ bool Database::_createuser(QString name, QString surname, QString mail, QString 
     return true;
 }
 
-bool Database::_checkmail(QString email)
+bool Database::Checkmail(QString email)
 {
     QSqlDatabase::database().transaction();
     _db.open();
@@ -134,7 +134,7 @@ bool Database::_checkmail(QString email)
     return true;
 }
 
-bool Database::_insertdata(QString name, QString surname, QString mail, QString phone , QString password,QString imagename , QByteArray fdtos)
+bool Database::Insertdata(QString name, QString surname, QString mail, QString phone , QString password,QString imagename , QByteArray fdtos)
 {
     bool activ=false;
     QSqlDatabase::database().transaction();
@@ -165,7 +165,7 @@ bool Database::_insertdata(QString name, QString surname, QString mail, QString 
     return true;
 }
 
-bool Database::_sendmessage(QString mail,QString tomail,QString text)
+bool Database::Sendmessage(QString mail,QString tomail,QString text)
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString datetime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss");
@@ -185,7 +185,7 @@ bool Database::_sendmessage(QString mail,QString tomail,QString text)
     return true;
 }
 
-bool Database::_markmessagestatuseread(QString user1, QString user2)
+bool Database::Markmessagestatuseread(QString user1, QString user2)
 {
     QSqlDatabase::database().transaction();
     _db.open();
@@ -207,7 +207,7 @@ bool Database::_markmessagestatuseread(QString user1, QString user2)
     return true;
 }
 
-QByteArray Database::_getimagefromdbquery(QString user )
+QByteArray Database::Getimagefromdbquery(QString user )
 {
     QByteArray image_data;
     QString image_name;
@@ -230,9 +230,9 @@ QByteArray Database::_getimagefromdbquery(QString user )
     return image_data;
 }
 
-bool Database::_checkonlineusers(QMap<QString,User> &map,QString _mail)
+bool Database::Checkonlineusers(QMap<QString,User> &map,QString _mail)
 {
-     QSqlDatabase::database().transaction();
+    QSqlDatabase::database().transaction();
     _db.open();
     QSqlQuery query(_db);
     if (query.exec("SELECT * FROM my_database.users WHERE active = '1';")) {
@@ -255,7 +255,7 @@ bool Database::_checkonlineusers(QMap<QString,User> &map,QString _mail)
     return true;
 }
 
-bool Database::_updatelistmessages(QTextBrowser *text, QString _mail, QString _to_mail)
+bool Database::Updatelistmessages(QTextBrowser *text, QString _mail, QString _to_mail)
 {
     QSqlDatabase::database().transaction();
     _db.open();
@@ -281,7 +281,7 @@ bool Database::_updatelistmessages(QTextBrowser *text, QString _mail, QString _t
     return true;
 }
 
-bool Database::_getusersfromdb(QMap<QString, User> &map,QListWidget *users_list, QString _mail)
+bool Database::Getusersfromdb(QMap<QString, User> &map,QListWidget *users_list, QString _mail)
 {
     QSqlDatabase::database().transaction();
     _db.open();
@@ -312,7 +312,7 @@ bool Database::_getusersfromdb(QMap<QString, User> &map,QListWidget *users_list,
     return true;
 }
 
-bool Database::_checknewmessage(QListWidget *_users_list, QMap<QString, User> _map_all_users,QString _mail){
+bool Database::Checknewmessage(QListWidget *_users_list, QMap<QString, User> _map_all_users,QString _mail){
     QSqlDatabase::database().transaction();
     _db.open();
     QSqlQuery query(_db);

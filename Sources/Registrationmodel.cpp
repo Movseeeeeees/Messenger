@@ -1,4 +1,4 @@
-#include "Headers/registrationmodel.h"
+#include "Headers/Registrationmodel.h"
 #include <QCryptographicHash>
 
 Registrationmodel::Registrationmodel( SecondWidget *view):db(Database::instance()),_view(view)
@@ -57,7 +57,7 @@ bool Registrationmodel::Checkdata()
         return false;
     }
     QString mail=_view->_mail->text();
-    if(!db._checkmail(mail)){
+    if(!db.Checkmail(mail)){
         QMessageBox::information(_view, "info", "Wrong email");
         return false;
     }
@@ -72,7 +72,7 @@ void Registrationmodel::Createaccount()
     QString phone_ = _view->_phone->text();
     QString password_ = Hashpassword(_view->_password ->text());
     if(Checkdata()){
-        db._insertdata(name_,surname_,mail_,phone_,password_,_imagename,_fdtos);
+        db.Insertdata(name_,surname_,mail_,phone_,password_,_imagename,_fdtos);
         QMessageBox::information(_view, "Info", "Succesfuly");
         _view->close();
     }
